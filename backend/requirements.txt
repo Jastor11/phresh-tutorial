@@ -1,0 +1,6 @@
+
+# app
+fastapi==0.55.1
+uvicorn==0.11.3
+pydantic==1.4
+email-validator==1.1.1
