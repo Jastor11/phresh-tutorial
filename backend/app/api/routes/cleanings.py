@@ -24,17 +24,11 @@ async def get_cleaning_by_id(
     return cleaning
 
 
-# ...other code
-
-
 @router.get("/", response_model=List[CleaningPublic], name="cleanings:get-all-cleanings")
 async def get_all_cleanings(
     cleanings_repo: CleaningsRepository = Depends(get_repository(CleaningsRepository)),
 ) -> List[CleaningPublic]:
     return await cleanings_repo.get_all_cleanings()
-
-
-# ...other code
 
 
 @router.post("/", response_model=CleaningPublic, name="cleanings:create-cleaning", status_code=HTTP_201_CREATED)
@@ -45,11 +39,6 @@ async def create_new_cleaning(
     created_cleaning = await cleanings_repo.create_cleaning(new_cleaning=new_cleaning)
 
     return created_cleaning
-
-
-# ...other code
-
-# ...other code
 
 
 @router.put("/{id}/", response_model=CleaningPublic, name="cleanings:update-cleaning-by-id")

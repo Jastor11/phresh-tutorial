@@ -83,9 +83,6 @@ class TestGetCleaning:
         assert test_cleaning in cleanings
 
 
-# ...other code
-
-
 class TestUpdateCleaning:
     @pytest.mark.parametrize(
         "attrs_to_change, values",
@@ -141,9 +138,6 @@ class TestUpdateCleaning:
 
         res = await client.put(app.url_path_for("cleanings:update-cleaning-by-id", id=id), json=cleaning_update)
         assert res.status_code == status_code
-
-
-# ...other code
 
 
 class TestDeleteCleaning:

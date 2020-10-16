@@ -35,9 +35,9 @@ UPDATE_CLEANING_BY_ID_QUERY = """
 """
 
 DELETE_CLEANING_BY_ID_QUERY = """
-    DELETE FROM cleanings  
-    WHERE id = :id  
-    RETURNING id;  
+    DELETE FROM cleanings
+    WHERE id = :id
+    RETURNING id;
 """
 
 
@@ -93,4 +93,3 @@ class CleaningsRepository(BaseRepository):
         deleted_id = await self.db.execute(query=DELETE_CLEANING_BY_ID_QUERY, values={"id": id})
 
         return deleted_id
-
