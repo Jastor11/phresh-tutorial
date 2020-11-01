@@ -19,6 +19,9 @@ from app.db.repositories.cleanings import CleaningsRepository
 from app.models.user import UserCreate, UserInDB
 from app.db.repositories.users import UsersRepository
 
+from app.core.config import SECRET_KEY, JWT_TOKEN_PREFIX
+from app.services import auth_service
+
 
 @pytest.fixture(scope="session")
 def docker() -> pydocker.APIClient:
@@ -105,3 +108,15 @@ async def client(app: FastAPI) -> AsyncClient:
             app=app, base_url="http://testserver", headers={"Content-Type": "application/json"}
         ) as client:
             yield client
+
+
+@pytest.fixture
+def authorized_client(client: AsyncClient, test_user: UserInDB) -> AsyncClient:
+    access_token = auth_service.create_access_token_for_user(user=test_user, secret_key=str(SECRET_KEY))
+
+    client.headers = {
+        **client.headers,
+        "Authorization": f"{JWT_TOKEN_PREFIX} {access_token}",
+    }
+
+    return client
