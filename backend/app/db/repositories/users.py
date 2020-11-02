@@ -7,7 +7,11 @@ from starlette.status import HTTP_400_BAD_REQUEST
 from databases import Database
 
 from app.db.repositories.base import BaseRepository
-from app.models.user import UserCreate, UserUpdate, UserInDB
+from app.models.user import UserCreate, UserUpdate, UserInDB, UserPublic
+
+from app.db.repositories.profiles import ProfilesRepository
+from app.models.profile import ProfileCreate, ProfilePublic
+
 from app.services import auth_service
 
 
@@ -34,6 +38,7 @@ class UsersRepository(BaseRepository):
     def __init__(self, db: Database) -> None:
         super().__init__(db)
         self.auth_service = auth_service
+        self.profile_repo = ProfilesRepository(db)
 
     async def get_user_by_email(self, *, email: EmailStr) -> UserInDB:
         user_record = await self.db.fetch_one(query=GET_USER_BY_EMAIL_QUERY, values={"email": email})
@@ -41,7 +46,7 @@ class UsersRepository(BaseRepository):
         if not user_record:
             return None
 
-        return UserInDB(**user_record)
+        return await self.populate_user(user=UserInDB(**user_record))
 
     async def get_user_by_username(self, *, username: str) -> UserInDB:
         user_record = await self.db.fetch_one(query=GET_USER_BY_USERNAME_QUERY, values={"username": username})
@@ -49,7 +54,8 @@ class UsersRepository(BaseRepository):
         if not user_record:
             return None
 
-        return UserInDB(**user_record)
+        # return UserInDB(**user_record)
+        return await self.populate_user(user=UserInDB(**user_record))
 
     async def register_new_user(self, *, new_user: UserCreate) -> UserInDB:
         # make sure email isn't already taken
@@ -69,7 +75,11 @@ class UsersRepository(BaseRepository):
         new_user_params = new_user.copy(update=user_password_update.dict())
         created_user = await self.db.fetch_one(query=REGISTER_NEW_USER_QUERY, values=new_user_params.dict())
 
-        return UserInDB(**created_user)
+        profile = await self.profile_repo.create_profile_for_user(
+            profile_create=ProfileCreate(user_id=created_user["id"])
+        )
+
+        return UserInDB(**created_user, profile=profile)
 
     async def authenticate_user(self, *, email: EmailStr, password: str) -> Optional[UserInDB]:
         # make user user exists in db
@@ -82,3 +92,7 @@ class UsersRepository(BaseRepository):
 
         return user
 
+    async def populate_user(self, *, user: UserInDB) -> UserInDB:
+        user_profile = await self.profile_repo.get_profile_by_user_id(user_id=user.id)
+        user.profile = ProfilePublic(**user_profile.dict())
+        return user
