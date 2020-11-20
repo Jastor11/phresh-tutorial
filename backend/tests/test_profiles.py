@@ -68,9 +68,6 @@ class TestProfileView:
         assert res.status_code == status.HTTP_404_NOT_FOUND
 
 
-# ...other code
-
-
 class TestProfileManagement:
     @pytest.mark.parametrize(
         "attr, value",
@@ -116,4 +113,3 @@ class TestProfileManagement:
             app.url_path_for("profiles:update-own-profile"), json={"profile_update": {attr: value}},
         )
         assert res.status_code == status_code
-

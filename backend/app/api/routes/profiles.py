@@ -35,4 +35,3 @@ async def update_own_profile(
     updated_profile = await profile_repo.update_profile(profile_update=profile_update, requesting_user=current_user)
 
     return updated_profile
-

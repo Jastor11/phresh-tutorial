@@ -75,4 +75,3 @@ class ProfilesRepository(BaseRepository):
         )
 
         return ProfileInDB(**updated_profile)
-

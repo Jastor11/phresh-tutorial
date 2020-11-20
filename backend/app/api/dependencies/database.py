@@ -16,4 +16,3 @@ def get_repository(Repo_type: Type[BaseRepository]) -> Callable:
         return Repo_type(db)
 
     return get_repo
-

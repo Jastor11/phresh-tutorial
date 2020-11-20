@@ -27,7 +27,14 @@ from app.db.repositories.users import UsersRepository
 
 from app.services import auth_service
 
-from app.core.config import SECRET_KEY, JWT_ALGORITHM, JWT_AUDIENCE, JWT_TOKEN_PREFIX, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.core.config import (
+    # authentication env variables
+    SECRET_KEY,
+    JWT_ALGORITHM,
+    JWT_AUDIENCE,
+    JWT_TOKEN_PREFIX,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+)
 
 
 pytestmark = pytest.mark.asyncio
@@ -60,7 +67,6 @@ class TestUserRegistration:
         assert user_in_db.username == new_user["username"]
 
         # check that the user returned in the response is equal to the user in the database
-        # assert UserPublic(**res.json()).dict(exclude={"access_token"}) == user_in_db.dict(exclude={"access_token"})
         created_user = UserPublic(**res.json()).dict(exclude={"access_token", "profile"})
         assert created_user == user_in_db.dict(exclude={"password", "salt"})
 

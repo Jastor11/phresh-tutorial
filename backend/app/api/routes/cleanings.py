@@ -1,12 +1,10 @@
 from typing import List
 
-# from fastapi import APIRouter, Body, Depends, HTTPException
 from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path
 from app.models.cleaning import CleaningCreate, CleaningUpdate, CleaningPublic
 
-# from app.models.cleaning import CleaningCreate, CleaningPublic
 from app.db.repositories.cleanings import CleaningsRepository
 from app.api.dependencies.database import get_repository
 

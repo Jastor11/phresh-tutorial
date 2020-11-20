@@ -48,27 +48,13 @@ class UserPasswordUpdate(CoreModel):
     salt: str
 
 
-# class UserInDB(IDModelMixin, DateTimeModelMixin, UserBase):
-#     """
-#     Add in id, created_at, updated_at, and user's password and salt
-#     """
-
-#     password: constr(min_length=7, max_length=100)
-#     salt: str
-
-
-# class UserPublic(IDModelMixin, DateTimeModelMixin, UserBase):
-#     access_token: Optional[AccessToken]
-
-
 class UserInDB(IDModelMixin, DateTimeModelMixin, UserBase):
     """
-    Add in user's password and salt. Allow optional user profile
+    Add in user's password and salt
     """
 
     password: constr(min_length=7)
     salt: str
-    # profile: Optional[ProfilePublic]
 
 
 class UserPublic(IDModelMixin, DateTimeModelMixin, UserBase):

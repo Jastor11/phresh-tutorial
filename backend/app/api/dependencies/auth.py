@@ -40,4 +40,3 @@ def get_current_active_user(current_user: UserInDB = Depends(get_user_from_token
         )
 
     return current_user
-

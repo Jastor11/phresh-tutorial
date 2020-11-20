@@ -97,7 +97,7 @@ class UsersRepository(BaseRepository):
 
     async def populate_user(self, *, user: UserInDB) -> UserInDB:
         return UserPublic(
-            # unpack the user dict,
+            # unpack the user in db instance,
             **user.dict(),
             # fetch the user's profile from the profiles_repo
             profile=await self.profiles_repo.get_profile_by_user_id(user_id=user.id),
