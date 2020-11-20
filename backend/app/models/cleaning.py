@@ -1,7 +1,8 @@
-from typing import Optional
+from typing import Optional, Union
 from enum import Enum
 
-from app.models.core import IDModelMixin, CoreModel
+from app.models.core import IDModelMixin, DateTimeModelMixin, CoreModel
+from app.models.user import UserPublic
 
 
 class CleaningType(str, Enum):
@@ -14,6 +15,7 @@ class CleaningBase(CoreModel):
     """
     All common characteristics of our Cleaning resource
     """
+
     name: Optional[str]
     description: Optional[str]
     price: Optional[float]
@@ -29,12 +31,12 @@ class CleaningUpdate(CleaningBase):
     cleaning_type: Optional[CleaningType]
 
 
-class CleaningInDB(IDModelMixin, CleaningBase):
+class CleaningInDB(IDModelMixin, DateTimeModelMixin, CleaningBase):
     name: str
     price: float
     cleaning_type: CleaningType
+    owner: Union[int, UserPublic]
 
 
-class CleaningPublic(IDModelMixin, CleaningBase):
+class CleaningPublic(CleaningInDB):
     pass
-
