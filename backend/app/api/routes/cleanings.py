@@ -66,4 +66,3 @@ async def delete_cleaning_by_id(
         raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="No cleaning found with that id.")
 
     return deleted_id
-

@@ -68,7 +68,7 @@ class UserInDB(IDModelMixin, DateTimeModelMixin, UserBase):
 
     password: constr(min_length=7)
     salt: str
-    profile: Optional[ProfilePublic]
+    # profile: Optional[ProfilePublic]
 
 
 class UserPublic(IDModelMixin, DateTimeModelMixin, UserBase):
