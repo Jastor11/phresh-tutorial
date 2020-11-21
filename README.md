@@ -54,4 +54,7 @@ The technology stack used to create the backend of this application is as follow
 - Part 17: Consuming a FastAPI backend from a react frontend ✅🚂📱
 
 
+## Note
+
+The `.env` file has been deliberately included in this git repo and should be removed in a production application.
 

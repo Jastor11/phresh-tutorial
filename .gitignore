@@ -3,4 +3,3 @@ __pycache__/
 .vscode
 .mypy_cache
 .pytest_cache
-backend/.env

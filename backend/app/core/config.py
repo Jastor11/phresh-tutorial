@@ -7,6 +7,7 @@ config = Config(".env")
 PROJECT_NAME = "phresh"
 VERSION = "1.0.0"
 API_PREFIX = "/api"
+ALLOWED_HOST_ORIGINS = None
 
 SECRET_KEY = config("SECRET_KEY", cast=Secret, default="CHANGEME")
 
@@ -17,7 +18,7 @@ POSTGRES_PORT = config("POSTGRES_PORT", cast=str, default="5432")
 POSTGRES_DB = config("POSTGRES_DB", cast=str)
 
 DATABASE_URL = config(
-  "DATABASE_URL",
-  cast=DatabaseURL,
-  default=f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    "DATABASE_URL",
+    cast=DatabaseURL,
+    default=f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
