@@ -260,4 +260,3 @@ class TestGetEvaluations:
             app.url_path_for("evaluations:list-evaluations-for-cleaner", username=test_user3.username)
         )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
-

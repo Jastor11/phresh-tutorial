@@ -82,7 +82,7 @@ LIST_EVALUATIONS_FOR_CLEANER_QUERY = """
 """
 
 GET_CLEANER_AGGREGATE_RATINGS_QUERY = """
-    SELECT        
+    SELECT
         AVG(professionalism) AS avg_professionalism,
         AVG(completeness)    AS avg_completeness,
         AVG(efficiency)      AS avg_efficiency,
@@ -90,7 +90,7 @@ GET_CLEANER_AGGREGATE_RATINGS_QUERY = """
         MIN(overall_rating)  AS min_overall_rating,
         MAX(overall_rating)  AS max_overall_rating,
         COUNT(cleaning_id)   AS total_evaluations,
-        COUNT(CASE WHEN no_show THEN 1 END) AS total_no_show,
+        SUM(no_show::int)    AS total_no_show,
         COUNT(overall_rating) FILTER(WHERE overall_rating = 1) AS one_stars,
         COUNT(overall_rating) FILTER(WHERE overall_rating = 2) AS two_stars,
         COUNT(overall_rating) FILTER(WHERE overall_rating = 3) AS three_stars,
