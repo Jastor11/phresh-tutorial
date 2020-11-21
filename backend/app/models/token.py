@@ -30,4 +30,3 @@ class JWTPayload(JWTMeta, JWTCreds):
 class AccessToken(CoreModel):
     access_token: str
     token_type: str
-
