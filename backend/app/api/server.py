@@ -8,11 +8,7 @@ def get_application():
     app = FastAPI(title="Phresh", version="1.0.0")
 
     app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
     )
 
     app.include_router(api_router, prefix="/api")
@@ -21,4 +17,3 @@ def get_application():
 
 
 app = get_application()
-
