@@ -7,6 +7,7 @@ config = Config(".env")
 PROJECT_NAME = "phresh"
 VERSION = "1.0.0"
 API_PREFIX = "/api"
+ALLOWED_HOST_ORIGINS = None
 
 
 SECRET_KEY = config("SECRET_KEY", cast=Secret)
