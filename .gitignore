@@ -1,5 +1,6 @@
-# Byte-compiled files
 __pycache__/
-
-# Environment files
-.env
+.DS_Store
+.vscode
+.mypy_cache
+.pytest_cache
+backend/.env

@@ -10,11 +10,7 @@ def get_application():
     app = FastAPI(title=config.PROJECT_NAME, version=config.VERSION)
 
     app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
     )
 
     app.add_event_handler("startup", tasks.create_start_app_handler(app))
