@@ -106,8 +106,8 @@ class TestGetCleaning:
             app.url_path_for("cleanings:get-cleaning-by-id", cleaning_id=test_cleaning.id)
         )
         assert res.status_code == status.HTTP_200_OK
-        cleaning = CleaningInDB(**res.json())
-        assert cleaning == test_cleaning
+        cleaning = CleaningPublic(**res.json()).dict(exclude={"owner"})
+        assert cleaning == test_cleaning.dict(exclude={"owner"})
 
     async def test_unauthorized_users_cant_access_cleanings(
         self, app: FastAPI, client: AsyncClient, test_cleaning: CleaningInDB
