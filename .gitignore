@@ -1,0 +1,7 @@
+.env
+.env.development
+.env.staging
+.env.production
+velup-io-service-key.json
+.DS_Store
+*.DS_Store
