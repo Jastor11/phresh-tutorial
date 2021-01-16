@@ -1,3 +1,8 @@
+# Byte-compiled files
+__pycache__/
+
+.vscode/*
+
 .env
 .env.development
 .env.staging
