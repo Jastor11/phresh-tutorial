@@ -11,6 +11,12 @@ from app.models.user import UserCreate, UserUpdate, UserInDB, UserPublic
 from app.services import auth_service
 
 
+GET_USER_BY_ID_QUERY = """
+    SELECT id, username, email, email_verified, password, salt, is_active, is_superuser, created_at, updated_at
+    FROM users
+    WHERE id = :id;
+"""
+
 GET_USER_BY_EMAIL_QUERY = """
     SELECT id, username, email, email_verified, password, salt, is_active, is_superuser, created_at, updated_at
     FROM users
@@ -35,6 +41,17 @@ class UsersRepository(BaseRepository):
         super().__init__(db)
         self.auth_service = auth_service
         self.profiles_repo = ProfilesRepository(db)
+
+    async def get_user_by_id(self, *, user_id: int, populate: bool = True) -> UserPublic:
+        user_record = await self.db.fetch_one(query=GET_USER_BY_ID_QUERY, values={"id": user_id})
+
+        if user_record:
+            user = UserInDB(**user_record)
+
+            if populate:
+                return await self.populate_user(user=user)
+
+            return user
 
     async def get_user_by_email(self, *, email: EmailStr, populate: bool = True) -> UserInDB:
         user_record = await self.db.fetch_one(query=GET_USER_BY_EMAIL_QUERY, values={"email": email})
