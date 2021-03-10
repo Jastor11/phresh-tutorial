@@ -47,14 +47,24 @@ def db(app: FastAPI) -> Database:
     return app.state._db
 
 
+# @pytest.fixture
+# async def test_cleaning(db: Database) -> CleaningInDB:
+#     cleaning_repo = CleaningsRepository(db)
+#     new_cleaning = CleaningCreate(
+#         name="fake cleaning name", description="fake cleaning description", price=9.99, cleaning_type="spot_clean",
+#     )
+
+#     return await cleaning_repo.create_cleaning(new_cleaning=new_cleaning)
+
+
 @pytest.fixture
-async def test_cleaning(db: Database) -> CleaningInDB:
+async def test_cleaning(db: Database, test_user: UserInDB) -> CleaningInDB:
     cleaning_repo = CleaningsRepository(db)
     new_cleaning = CleaningCreate(
-        name="fake cleaning name", description="fake cleaning description", price=9.99, cleaning_type="spot_clean",
+        name="fake cleaning name", description="fake cleaning description", price=9.99, cleaning_type="spot_clean"
     )
 
-    return await cleaning_repo.create_cleaning(new_cleaning=new_cleaning)
+    return await cleaning_repo.create_cleaning(new_cleaning=new_cleaning, requesting_user=test_user)
 
 
 @pytest.fixture
