@@ -70,6 +70,19 @@ async def test_user(db: Database) -> UserInDB:
     return await user_repo.register_new_user(new_user=new_user)
 
 
+@pytest.fixture
+async def test_user2(db: Database) -> UserInDB:
+    new_user = UserCreate(email="serena@williams.io", username="serenawilliams", password="tennistwins",)
+
+    user_repo = UsersRepository(db)
+
+    existing_user = await user_repo.get_user_by_email(email=new_user.email)
+    if existing_user:
+        return existing_user
+
+    return await user_repo.register_new_user(new_user=new_user)
+
+
 # Make requests in our tests
 @pytest.fixture
 async def client(app: FastAPI) -> AsyncClient:
