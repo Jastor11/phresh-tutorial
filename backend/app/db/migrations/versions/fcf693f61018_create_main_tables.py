@@ -143,18 +143,70 @@ def create_offers_table() -> None:
     )
 
 
+def create_cleaner_evaluations_table() -> None:
+    """
+    Owner of a cleaning job should be able to evaluate a cleaner's execution of the job.
+
+    - Allow owner to leave ratings, headline, and comment
+    - Also add no show if the cleaner failed to show up
+    - Rating split into sections
+        - professionalism - did they handle things like pros?
+        - completeness - how thorough were they? did everything get cleaned as it should have?
+        - efficiency - how quickly and effectively did they get the job done?
+        - overall - what's the consensus rating for this cleaning job?
+    """
+    op.create_table(
+        "cleaning_to_cleaner_evaluations",
+        sa.Column(
+            "cleaning_id",  # job that was completed
+            sa.Integer,
+            sa.ForeignKey("cleanings.id", ondelete="SET NULL"),
+            nullable=False,
+            index=True,
+        ),
+        sa.Column(
+            "cleaner_id",  # user who completed the job
+            sa.Integer,
+            sa.ForeignKey("users.id", ondelete="SET NULL"),
+            nullable=False,
+            index=True,
+        ),
+        sa.Column("no_show", sa.Boolean, nullable=False, server_default="False"),
+        sa.Column("headline", sa.Text, nullable=True),
+        sa.Column("comment", sa.Text, nullable=True),
+        sa.Column("professionalism", sa.Integer, nullable=True),
+        sa.Column("completeness", sa.Integer, nullable=True),
+        sa.Column("efficiency", sa.Integer, nullable=True),
+        sa.Column("overall_rating", sa.Integer, nullable=False),
+        *timestamps(),
+    )
+    op.create_primary_key(
+        "pk_cleaning_to_cleaner_evaluations", "cleaning_to_cleaner_evaluations", ["cleaning_id", "cleaner_id"]
+    )
+    op.execute(
+        """
+        CREATE TRIGGER update_cleaning_to_cleaner_evaluations_modtime
+            BEFORE UPDATE
+            ON cleaning_to_cleaner_evaluations
+            FOR EACH ROW
+        EXECUTE PROCEDURE update_updated_at_column();
+        """
+    )
+
+
 def upgrade() -> None:
     create_updated_at_trigger()
     create_users_table()
     create_profiles_table()
     create_cleanings_table()
     create_offers_table()
+    create_cleaner_evaluations_table()
 
 
 def downgrade() -> None:
+    op.drop_table("cleaning_to_cleaner_evaluations")
     op.drop_table("user_offers_for_cleanings")
     op.drop_table("cleanings")
     op.drop_table("profiles")
     op.drop_table("users")
     op.execute("DROP FUNCTION update_updated_at_column")
-

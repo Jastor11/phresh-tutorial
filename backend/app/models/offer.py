@@ -11,6 +11,7 @@ class OfferStatus(str, Enum):
     rejected = "rejected"
     pending = "pending"
     cancelled = "cancelled"
+    completed = "completed"
 
 
 class OfferBase(CoreModel):
