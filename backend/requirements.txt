@@ -1,7 +1,7 @@
 # app
-fastapi==0.55.1
+fastapi==0.62.0
 uvicorn==0.11.3
-pydantic==1.4
+pydantic==1.7.3
 email-validator==1.1.1
 python-multipart==0.0.5
 # db
@@ -13,7 +13,7 @@ pyjwt==2.0.1
 passlib[bcrypt]==1.7.2
 
 # dev
-pytest==6.2.1
+pytest==6.2.2
 pytest-asyncio==0.14.0
 httpx==0.16.1
 asgi-lifespan==1.0.1

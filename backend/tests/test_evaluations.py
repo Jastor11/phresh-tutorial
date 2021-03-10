@@ -34,9 +34,6 @@ class TestEvaluationRoutes:
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
-# ...other code
-
-
 class TestCreateEvaluations:
     async def test_owner_can_leave_evaluation_for_cleaner_and_mark_offer_completed(
         self,

@@ -273,9 +273,6 @@ class TestAcceptOffers:
                 assert offer.status == "rejected"
 
 
-# ...other code
-
-
 class TestCancelOffers:
     async def test_user_can_cancel_offer_after_it_has_been_accepted(
         self,
