@@ -17,7 +17,7 @@ services:
       - db
 
   db:
-    image: postgres:12.1-alpine
+    image: postgres:13-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
