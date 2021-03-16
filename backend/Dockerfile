@@ -5,8 +5,6 @@ WORKDIR /backend
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONBUFFERED 1
 
-COPY ./requirements.txt /backend/requirements.txt
-
 # install system dependencies
 RUN apt-get update \
   && apt-get -y install netcat gcc postgresql \
