@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import HTTPException, Depends, status
 
 from app.models.user import UserInDB
@@ -28,6 +29,13 @@ async def get_offer_for_cleaning_from_user_by_path(
     offers_repo: OffersRepository = Depends(get_repository(OffersRepository)),
 ) -> OfferInDB:
     return await get_offer_for_cleaning_from_user(user=user, cleaning=cleaning, offers_repo=offers_repo)
+
+
+async def list_offers_for_cleaning_by_id_from_path(
+    cleaning: CleaningInDB = Depends(get_cleaning_by_id_from_path),
+    offers_repo: OffersRepository = Depends(get_repository(OffersRepository)),
+) -> List[OfferInDB]:
+    return await offers_repo.list_offers_for_cleaning(cleaning=cleaning)
 
 
 async def check_offer_create_permissions(
@@ -72,6 +80,7 @@ def check_offer_acceptance_permissions(
     current_user: UserInDB = Depends(get_current_active_user),
     cleaning: CleaningInDB = Depends(get_cleaning_by_id_from_path),
     offer: OfferInDB = Depends(get_offer_for_cleaning_from_user_by_path),
+    existing_offers: List[OfferInDB] = Depends(list_offers_for_cleaning_by_id_from_path),
 ) -> None:
     if cleaning.owner != current_user.id:
         raise HTTPException(
@@ -80,6 +89,10 @@ def check_offer_acceptance_permissions(
     if offer.status != "pending":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Can only accept offers that are currently pending."
+        )
+    if "accepted" in [o.status for o in existing_offers]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="That cleaning job already has an accepted offer."
         )
 
 
@@ -103,4 +116,3 @@ def check_offer_rescind_permissions(offer: OfferInDB = Depends(get_offer_for_cle
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Can only rescind currently pending offers."
         )
-
