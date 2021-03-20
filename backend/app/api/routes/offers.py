@@ -21,6 +21,7 @@ from app.api.dependencies.offers import (
     check_offer_rescind_permissions,
     get_offer_for_cleaning_from_current_user,
     get_offer_for_cleaning_from_user_by_path,
+    list_offers_for_cleaning_by_id_from_path,
 )
 
 
@@ -51,10 +52,9 @@ async def create_offer(
     dependencies=[Depends(check_offer_list_permissions)],
 )
 async def list_offers_for_cleaning(
-    cleaning: CleaningInDB = Depends(get_cleaning_by_id_from_path),
-    offers_repo: OffersRepository = Depends(get_repository(OffersRepository)),
-) -> OfferPublic:
-    return await offers_repo.list_offers_for_cleaning(cleaning=cleaning)
+    offers: List[OfferInDB] = Depends(list_offers_for_cleaning_by_id_from_path),
+) -> List[OfferPublic]:
+    return offers
 
 
 @router.get(
